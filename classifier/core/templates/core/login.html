@@ -1,0 +1,114 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Secure Login</h4>
+                </div>
+                <div class="card-body">
+                    {% if form.errors %}
+                    <div class="alert alert-danger">
+                        <strong>Error:</strong> Invalid username or password.
+                    </div>
+                    {% endif %}
+                    
+                    {% if error %}
+                    <div class="alert alert-warning">
+                        {{ error }}
+                    </div>
+                    {% endif %}
+                    
+                    <form method="post" id="loginForm">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="id_username" class="form-label">Username</label>
+                            <input type="text" name="username" autofocus autocapitalize="none" autocomplete="username"
+                                   class="form-control" required id="id_username">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="id_password" class="form-label">Password</label>
+                            <input type="password" name="password" autocomplete="current-password"
+                                   class="form-control" required id="id_password">
+                        </div>
+                        
+                        {% if require_device_auth %}
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="trustDeviceCheck" name="trust_device">
+                            <label class="form-check-label" for="trustDeviceCheck">Trust this device</label>
+                            <small class="form-text text-muted d-block">Don't check on public computers</small>
+                        </div>
+                        {% endif %}
+                        
+                        <input type="hidden" name="device_hash" id="deviceHash">
+                        <input type="hidden" name="screen_width" id="screenWidth">
+                        <input type="hidden" name="screen_height" id="screenHeight">
+                        <input type="hidden" name="timezone" id="timezoneData">
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary" id="loginButton">
+                                <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                Login
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <div class="mt-3 text-center">
+                        <span class="mx-2">|</span>
+                        <a href="{% url 'register' %}">Create account</a>
+                    </div>
+                </div>
+                <div class="card-footer text-muted small">
+                    <div class="d-flex justify-content-between">
+                        <span>Secure Access</span>
+                        <span id="securityBadge" class="badge bg-info">Device Verifying...</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-3 alert alert-info small">
+                <i class="bi bi-shield-lock"></i> This system uses device fingerprinting for security. 
+                No personal hardware identifiers are stored.
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/fingerprint.js' %}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async function() {
+    // Set screen info
+    document.getElementById('screenWidth').value = window.screen.width;
+    document.getElementById('screenHeight').value = window.screen.height;
+    
+    // Set timezone
+    document.getElementById('timezoneData').value = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    
+    // Generate fingerprint
+    try {
+        const fp = await DeviceFingerprinter.generate();
+        document.getElementById('deviceHash').value = fp.hash;
+        document.getElementById('securityBadge').className = 'badge bg-success';
+        document.getElementById('securityBadge').textContent = 'Device Verified';
+    } catch (error) {
+        console.error('Fingerprint error:', error);
+        document.getElementById('securityBadge').className = 'badge bg-warning';
+        document.getElementById('securityBadge').textContent = 'Basic Security';
+    }
+    
+    // Form submission handler
+    document.getElementById('loginForm').addEventListener('submit', function() {
+        const btn = document.getElementById('loginButton');
+        btn.disabled = true;
+        btn.querySelector('.spinner-border').classList.remove('d-none');
+    });
+});
+</script>
+{% endblock %}

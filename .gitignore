@@ -1,0 +1,53 @@
+# Virtual Environment
+venv/
+wcpro/
+.env/
+ENV/
+env/
+
+# Python cache and compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django
+*.log
+*.pot
+*.pyc
+db.sqlite3
+media/
+
+# IDE specific
+.vscode/
+.idea/
+*.swp
+*.swo
+
+website_classifier/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Coverage reports
+.coverage
+htmlcov/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Package files
+*.egg-info/
+dist/
+build/
+
+# Database migrations (optional)
+*/migrations/*.py
+!*/migrations/__init__.py
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db

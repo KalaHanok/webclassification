@@ -1,0 +1,83 @@
+body {
+  width: 350px;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.hidden {
+  display: none;
+}
+
+h1 {
+  font-size: 18px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.auth-btn {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.auth-btn:hover {
+  background-color: #3367d6;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button[type="submit"] {
+  background-color: #34a853;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+}
+
+button[type="submit"]:hover {
+  background-color: #2d8e47;
+}
+
+#message {
+  margin-top: 15px;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.error {
+  background-color: #ffdddd;
+  color: #d8000c;
+}
+
+.success {
+  background-color: #ddffdd;
+  color: #4F8A10;
+}
